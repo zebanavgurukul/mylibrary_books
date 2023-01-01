@@ -89,68 +89,8 @@ app.get('/book/:id', (req, res) => {
     })
 });
 
-// app.put("/book/:_id", async (req, res) => {
-//     let data = await db.collection('customers').updateOne(
-//         req.params,
-//         {
-//             $set: req.body
-//         }
-//     );
-//     res.send(data);
-// });
-
 // any update on this book title
-// app.put("/book/:id", async (req, res) => {
-// 	try {
-// 		const post = await db.collection('customers').findOne({ title: req.params.id })
 
-// 		if (req.body.title) {
-// 			post.title = req.body.title
-// 		}
-
-// 		if (req.body.isbn) {
-// 			post.isbn = req.body.isbn
-// 		}
-
-//         if (req.body.pageCount) {
-// 			post.pageCount = req.body.pageCount
-// 		}
-
-// 		if (req.body.publishedDate) {
-// 			post.publishedDate = req.body.publishedDate
-// 		}
-
-//         if (req.body.thumbnailUrl) {
-// 			post.thumbnailUrl = req.body.thumbnailUrl
-// 		}
-
-// 		if (req.body.shortDescription) {
-// 			post.shortDescription = req.body.shortDescription
-// 		}
-
-//         if (req.body.longDescription) {
-// 			post.longDescription = req.body.longDescription
-// 		}
-
-// 		if (req.body.status) {
-// 			post.status = req.body.status
-// 		}
-
-//         if (req.body.authors) {
-// 			post.authors = req.body.authors
-// 		}
-
-// 		if (req.body.categories) {
-// 			post.categories = req.body.categories
-// 		}
-
-// 		await post.save()
-// 		res.send(post)
-// 	} catch {
-// 		res.status(404)
-// 		res.send({ error: "Post doesn't exist!" })
-// 	}
-// });
 
 // delete by book title
 app.delete("/delete/:id", (req, res) => {
