@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.DB_connect,{
+mongoose.connect(process.env.DB_connect, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -33,9 +33,6 @@ app.post("/books", (req, res) => {
         categories
     } = req.body;
 
-    // const bookExist = booksDirectory.find(b => b.isbn === isbn);
-    // if (bookExist) return res.send('Book already exist');
-
     const book = {
         title,
         isbn,
@@ -49,19 +46,25 @@ app.post("/books", (req, res) => {
         categories
     };
 
-    db.collection('customers').insertOne(book, (err, collection) => {
-        if (err) {
-            throw err;
-        }
-        const bookExist = db.collection('customers').find(b => b.isbn === isbn);
-        if (bookExist) return res.send('Book already exist');
-        else{
-            console.log("Record Inserted Successfully");
-            res.send(book);
-        }
-        // console.log("Record Inserted Successfully");
-        // res.send(book);
-    });
+    if (!title || !isbn || !pageCount || !publishedDate || !thumbnailUrl || !shortDescription || !longDescription || !status || !authors || !categories) {
+        return res.status(422).json({ error: "Please filled out the property" })
+    }
+
+    db.collection('customers').findOne({ isbn: isbn })
+        .then((isbnExist) => {
+            if (isbnExist) {
+                return res.status(422).json({ error: "isbn already Exist" })
+            }
+            db.collection('customers').insertOne(book, (err, collection) => {
+
+                if (err) {
+                    throw ((err) => res.status(500).json({ error: "Failed to registered" }));
+                }
+                res.status(201).json({ message: "Record Inserted Successfully" });
+
+            })
+
+        }).catch(err => { console.log(err); });
 
 });
 
