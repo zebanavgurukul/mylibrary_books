@@ -18,6 +18,7 @@ var db = mongoose.connection;
 db.on('error', () => console.log("Error in Connecting to Database"));
 db.once('open', () => console.log("Connected to Database"))
 
+// post book
 app.post("/books", (req, res) => {
 
     const {
@@ -60,12 +61,32 @@ app.post("/books", (req, res) => {
                 if (err) {
                     throw ((err) => res.status(500).json({ error: "Failed to registered" }));
                 }
-                res.status(201).json({ message: "Record Inserted Successfully" });
+                res.status(201).json({ message: "Record  Inserted Successfully" });
 
             })
 
         }).catch(err => { console.log(err); });
 
+});
+
+// get all books
+app.get('/Allbooks', (req, res) => {
+    db.collection('customers').find({}).toArray((err, result) => {
+        if(err) throw err
+        res.send(result)
+    })
+});
+
+// get by id as isbn
+app.get('/book/:id', (req, res) => {
+    db.collection('customers').findOne({isbn: req.params.id}).then((book) => {
+        if (!book) {
+            return res.status(404).send();
+        }
+        res.send(book);
+    }).catch((error) => {
+        res.status(500).send(error)
+    })
 });
 
 // replace 3000 with (process.env.PORT)
